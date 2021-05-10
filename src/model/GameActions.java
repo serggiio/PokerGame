@@ -44,17 +44,112 @@ public abstract class GameActions {
         // Evaluar si tiene escalera
         for (int i = 0; i < 4; i++) {
             valueAux += 1;
-            System.out.println("");
-            System.out.println("valor de auxiliar " + valueAux);
+            // System.out.println("");
+            // System.out.println("valor de auxiliar " + valueAux);
             flush = this.validateFlush(player, lowCard, valueAux);
-            System.out.println("Valor metodo flush> " + flush);
-            System.out.println("");
+            // System.out.println("Valor metodo flush> " + flush);
+            // System.out.println("");
             if (!flush) {
                 break;
             }
         }
 
-        System.out.println("Evaluacion COLOR> " + color);
+        // Evaluar si tiene pares o repetidos
+        System.out.println("\nPares o repetidos");
+        List<Card> tempPairList = player.getCardList();
+        Card tempCard = tempPairList.get(0);
+        // tempPairList.remove(0);
+        int repeatsNumber = 0;
+        List<Hand> tempHands = new ArrayList<>();
+        List<Card> tempCards = new ArrayList<>();
+        List<Card> validatedCards = new ArrayList<>();
+
+        /*
+         * for (int i = 0; i < tempPairList.size(); i++) {
+         * System.out.println("inicio FOR> " + tempCard.getValue() + " " +
+         * tempCard.getType()); System.out.println("Evaluar> " + tempCard.getValue() +
+         * " " + tempCard.getType()); System.out.println("Evaluar> " +
+         * tempPairList.get(i).getValue() + " " + tempPairList.get(i).getType()); if
+         * (tempCard.getValue() == tempPairList.get(i).getValue()) {
+         * System.out.println("Repetido> " + tempPairList.get(i).getValue());
+         * repeatsNumber += 1; }
+         * 
+         * System.out.println("lista> " + tempPairList.get(i).getValue() + " " +
+         * tempPairList.get(i).getType()); tempCard = tempPairList.get(i);
+         * System.out.println("reemplazado> " + tempCard.getValue() + " " +
+         * tempCard.getType()); tempPairList.remove(i); i -= 1; }
+         */
+
+        for (int i = 0; i < tempPairList.size(); i++) {
+            repeatsNumber = 1;
+            tempCards.clear();
+            // System.out.println("Contiene la carta validada> " +
+            // validatedCards.contains(tempPairList.get(i)));
+            for (int j = 0; j < tempPairList.size(); j++) {
+                if (!tempPairList.get(i).equals(tempPairList.get(j))) {
+
+                    /*
+                     * System.out.println("\n");
+                     * 
+                     * System.out.println( "Evaluar> " + tempPairList.get(i).getValue() + " " +
+                     * tempPairList.get(i).getType()); System.out.println( "Evaluar> " +
+                     * tempPairList.get(j).getValue() + " " + tempPairList.get(j).getType());
+                     */
+
+                    if (tempPairList.get(i).getValue().equals(tempPairList.get(j).getValue())) {
+                        repeatsNumber += 1;
+
+                        // revisar, siempre va con 2
+                        tempCards.add(tempPairList.get(i));
+                        tempCards.add(tempPairList.get(j));
+
+                    }
+                }
+
+            }
+            // Si tiene alguna carta repetida agregar la mano
+            if (repeatsNumber > 1) {
+                System.out.println("Numero de veces repetidos> " + repeatsNumber);
+
+                switch (repeatsNumber) {
+                    case 2:
+                        tempHands.add(new Hand("Par", 2, tempCards));
+                        break;
+                    case 3:
+                        tempHands.add(new Hand("Trio", 4, tempCards));
+                        // System.out.println("add " + tempCards.size());
+
+                        break;
+                    case 4:
+                        tempHands.add(new Hand("Poker", 8, tempCards));
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+
+        }
+
+        /*
+         * System.out.println("Revision de manos> "); for (var eachs : tempHands) {
+         * System.out.println("\nMano> ");
+         * System.out.println(eachs.getHandDescription()); System.out.println("Cards " +
+         * eachs.getCards()); for (var cardas : eachs.getCards()) {
+         * System.out.println(cardas.getValue() + " " + cardas.getType()); } }
+         */
+
+        System.out.println("\n");
+        System.out.println("Revision de manos> ");
+        for (var each : tempHands) {
+            System.out.println("\nMano> ");
+            System.out.println(each.getHandDescription() + " " + each.getCards().size());
+            for (var card : each.getCards()) {
+                System.out.println("Cartas> " + card.getValue() + ", " + card.getType());
+            }
+        }
+
+        System.out.println("\nEvaluacion COLOR> " + color);
         System.out.println("Evaluacion ESCALERA > " + flush);
 
         // anadir si es que tiene un criterio de mano
@@ -72,7 +167,8 @@ public abstract class GameActions {
             if (!lowCard.equals(playerCard)) {
                 // !lowCard.getValue().equals(playerCard.getValue()) &&
                 // !lowCard.getType().equals(playerCard.getType())
-                System.out.println("Valor a evaluar> " + valueAux + " carta> " + playerCard.getValue());
+                // System.out.println("Valor a evaluar> " + valueAux + " carta> " +
+                // playerCard.getValue());
                 if (playerCard.getValue().equals(String.valueOf(valueAux))) {
                     status = true;
                     break;
@@ -155,17 +251,17 @@ public abstract class GameActions {
 
         List<Card> ramdomCardList = new ArrayList<>();
 
-        ramdomCardList.add(new Card());
-        ramdomCardList.add(new Card());
-        ramdomCardList.add(new Card());
-        ramdomCardList.add(new Card());
-        ramdomCardList.add(new Card());
+        // ramdomCardList.add(new Card());
+        // ramdomCardList.add(new Card());
+        // ramdomCardList.add(new Card());
+        // ramdomCardList.add(new Card());
+        // ramdomCardList.add(new Card());
 
-        // ramdomCardList.add(new Card("trebol", "8"));
-        // ramdomCardList.add(new Card("diamante", "10"));
-        // ramdomCardList.add(new Card("diamante", "J"));
-        // ramdomCardList.add(new Card("diamante", "Q"));
-        // ramdomCardList.add(new Card("diamante", "6"));
+        ramdomCardList.add(new Card("trebol", "2"));
+        ramdomCardList.add(new Card("diamante", "2"));
+        ramdomCardList.add(new Card("diamante", "8"));
+        ramdomCardList.add(new Card("diamante", "8"));
+        ramdomCardList.add(new Card("espada", "2"));
 
         return ramdomCardList;
 
